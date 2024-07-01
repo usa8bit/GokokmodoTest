@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="inherit_sale_order_view_tree" model="ir.ui.view">
+            <field name="name">inherit_sale_order - Form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="business_model"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="inherit_sale_order_view_search" model="ir.ui.view">
+            <field name="name">inherit_sale_order - Search</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="Business Model" name="group_by_business_model"
+                            context="{'group_by':'business_model'}"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="inherit_sale_order_view_form" model="ir.ui.view">
+            <field name="name">inherit_sale_order - Form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='partner_details']/field[@name='partner_id']" position="before">
+                    <field name="business_model"/>
+                </xpath>
+                <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='tax_id']" position="attributes">
+                    <attribute name="domain">[('business_model', '=', parent.business_model)]</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
